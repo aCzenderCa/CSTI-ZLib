@@ -1,0 +1,28 @@
+﻿=== CardVisualize
+叠加上去的元素有其唯一key，同一key重复设置效果为替换
+
+==== SetIcon(card, string icon, x, y, width, height, overwriteKey?)
+按名称将图片icon叠加到card上
+
+icon名作为key
+
+==== SetIconByCard(card, iconCard, x, y, width, height, overwriteKey?)
+将iconCard的图标叠加到card上
+
+card的对象名作为key(不同inGame卡牌直接不同)
+
+==== SetText(card, localKey, x, y, width, height, overwriteKey?)
+将本地化字符串键localKey(找不到对应项则直接把key的内容显示上去)叠加到card上
+
+文本自动缩放到区域最大，不提供字体大小选项
+
+localKey作为key
+
+==== ClearIcon(card)
+清除所有叠加的图片，并删除存储数据
+
+==== 已知问题
+====
+* 由于多张卡牌重新生成后排序并不固定，所以持久性存储不一定能生效。
+* 只有一张卡在一格的情况下，重开游戏或重进env都能保持icon的叠加状态
+====

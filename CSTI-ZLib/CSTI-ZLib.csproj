@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
         <RootNamespace>CSTI_ZLib</RootNamespace>
         <Nullable>enable</Nullable>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>

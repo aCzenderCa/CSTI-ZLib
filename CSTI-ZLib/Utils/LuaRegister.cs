@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using CSTI_LuaActionSupport.AllPatcher;
 using HarmonyLib;
 
 namespace CSTI_ZLib.Utils
@@ -15,17 +14,22 @@ namespace CSTI_ZLib.Utils
     {
         public static void RegisterAll()
         {
-            var luaRuntime = CardActionPatcher.LuaRuntime;
             foreach (var luaLibType in from assembly in AccessTools.AllAssemblies()
                      from type in AccessTools.GetTypesFromAssembly(assembly)
                      where type.GetCustomAttribute(typeof(LuaLibAttribute)) != null
                      select type)
             {
-                luaRuntime.NewTable(luaLibType.Name);
+                MainRuntime.Lua.NewTable(luaLibType.Name);
                 foreach (var methodInfo in luaLibType.GetMethods(
                              BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static))
                 {
-                    luaRuntime.RegisterFunction($"{luaLibType.Name}.{methodInfo.Name}", methodInfo);
+                    MainRuntime.Lua.RegisterFunction($"{luaLibType.Name}.{methodInfo.Name}", methodInfo);
+                }
+
+                var luaLibInitFunc = AccessTools.DeclaredMethod(luaLibType, "LuaLibInit");
+                if (luaLibInitFunc != null)
+                {
+                    luaLibInitFunc.Invoke(null, Array.Empty<object>());
                 }
             }
         }
