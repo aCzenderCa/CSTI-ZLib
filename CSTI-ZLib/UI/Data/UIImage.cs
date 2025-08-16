@@ -40,28 +40,38 @@ public class UIImage : CommonUIBase
         base.Init();
 
         if (Self == null) return;
-        if (string.IsNullOrEmpty(Sprite)) return;
-
-        if (ImageCom == null) ImageCom = Self.GetOrAdd<Image>();
-        ImageCom.color = Color;
-        if (ModLoader.ModLoader.SpriteDict.TryGetValue(Sprite, out var sprite))
+        if (!string.IsNullOrEmpty(Sprite))
         {
-            ImageCom.sprite = sprite;
+            if (ImageCom == null) ImageCom = Self.GetOrAdd<Image>();
+            InitImage(Self, ImageCom, Sprite, Color, Size);
+        }
+        else if (ImageCom != null)
+        {
+            ImageCom.enabled = false;
+        }
+    }
+
+    protected static void InitImage(RectTransform self, Image image, string spriteName, Color color, Vector2 size)
+    {
+        image.color = color;
+        if (ModLoader.ModLoader.SpriteDict.TryGetValue(spriteName, out var sprite))
+        {
+            image.sprite = sprite;
             var ratio = sprite.rect.width / sprite.rect.height;
-            if (Size is { x: < 0, y: < 0 })
+            if (size is { x: < 0, y: < 0 })
             {
-                Self.sizeDelta = sprite.rect.size;
+                self.sizeDelta = sprite.rect.size;
             }
-            else if (Size is { x: < 0, y: > 0 })
+            else if (size is { x: < 0, y: > 0 })
             {
-                Self.sizeDelta = new Vector2(ratio * Size.y, Size.y);
+                self.sizeDelta = new Vector2(ratio * size.y, size.y);
             }
-            else if (Size is { x: > 0, y: < 0 })
+            else if (size is { x: > 0, y: < 0 })
             {
-                Self.sizeDelta = new Vector2(Size.x, Size.x / ratio);
+                self.sizeDelta = new Vector2(size.x, size.x / ratio);
             }
         }
 
-        ImageCom.enabled = ImageCom.sprite;
+        image.enabled = image.sprite;
     }
 }

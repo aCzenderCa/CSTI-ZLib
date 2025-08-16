@@ -85,6 +85,16 @@ public class CommonUIBase : IDisposable
         ValidInit();
     }
 
+    public void SetPosition(float x, float y)
+    {
+        LocalPosition = new Vector2(x, y);
+    }
+
+    public void SetSize(float width, float height)
+    {
+        Size = new Vector2(width, height);
+    }
+
     /// <summary>
     /// 事件执行顺序 Base.Init -> Super.Init
     /// </summary>

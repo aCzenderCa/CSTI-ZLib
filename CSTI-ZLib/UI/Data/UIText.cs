@@ -15,9 +15,16 @@ public class UIText : CommonUIBase
         base.Init();
 
         if (Self == null) return;
-        TextCom = Self.GetOrAdd<TextMeshProUGUI>();
-        TextCom.text = Text;
-        TextCom.fontSize = FontSize;
-        TextCom.alignment = TextAlignment;
+        if (!string.IsNullOrEmpty(Text))
+        {
+            TextCom = Self.GetOrAdd<TextMeshProUGUI>();
+            TextCom.text = new LocalizedString { DefaultText = Text, LocalizationKey = Text }.ToString();
+            TextCom.fontSize = FontSize;
+            TextCom.alignment = TextAlignment;
+        }
+        else if (TextCom != null)
+        {
+            TextCom.enabled = false;
+        }
     }
 }

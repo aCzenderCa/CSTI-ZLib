@@ -43,13 +43,29 @@ public class UIPanel : UIImage
         return uiImage;
     }
 
-    public UIText AddText(string name, string text, float fontSize, float x = 0, float y = 0, float width = 100,
+    public UICard AddCard(string name, string image, string subImage, float x = 0, float y = 0, float width = 100, float height = 100)
+    {
+        var uiCard = new UICard
+        {
+            Name = name,
+            Sprite = image,
+            LocalPosition = new Vector2(x, y),
+            Size = new Vector2(width, height),
+            Rotation = 0,
+            SubSize = new Vector2(width, height),
+            SubSpriteName = subImage,
+        };
+        Children.Add(uiCard);
+        return uiCard;
+    }
+
+    public UIText AddText(string name, string label, float fontSize, float x = 0, float y = 0, float width = 100,
         float height = 100)
     {
         var uiText = new UIText
         {
             Name = name,
-            Text = text,
+            Text = label,
             FontSize = fontSize,
             LocalPosition = new Vector2(x, y),
             Size = new Vector2(width, height),
@@ -57,6 +73,24 @@ public class UIPanel : UIImage
         };
         Children.Add(uiText);
         return uiText;
+    }
+
+    public UIButton AddButton(string name, string image, string label, float fontSize, float x = 0, float y = 0, float width = 100,
+        float height = 100)
+    {
+        var uiButton = new UIButton
+        {
+            Name = name,
+            Sprite = image,
+            Label = label,
+            FontSize = fontSize,
+            LocalPosition = new Vector2(x, y),
+            Size = new Vector2(width, height),
+            Rotation = 0,
+            SubSize = new Vector2(width, height),
+        };
+        Children.Add(uiButton);
+        return uiButton;
     }
 
     public UIScrollPanel AddScrollPanel(string name, bool horizontalScroll, float x = 0, float y = 0,
@@ -189,8 +223,6 @@ public class UIPanel : UIImage
             if (uiBase.Self == null)
             {
                 uiBase.Build(parent);
-                
-                
             }
             else
             {
