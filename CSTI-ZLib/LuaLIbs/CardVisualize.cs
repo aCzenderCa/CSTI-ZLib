@@ -5,6 +5,7 @@ using CSTI_ZLib.LuaLIbs.Data;
 using CSTI_ZLib.LuaLIbs.Utils;
 using CSTI_ZLib.Patcher;
 using CSTI_ZLib.Utils;
+using NLua;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -148,6 +149,14 @@ public static class CardVisualize
 
         using var dataToken = cardBridge.UseData();
         dataToken.Data![CVRecordKey] = null;
+    }
+
+    public static void RegCardHoverEvent(string uuid,LuaFunction function)
+    {
+        CardVisualPatcher.CardHoverEvents.Add(uuid, (bridge, text) =>
+        {
+            function.Call(bridge, text);
+        });
     }
 
     #endregion

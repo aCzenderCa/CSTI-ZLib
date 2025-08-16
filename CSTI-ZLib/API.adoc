@@ -27,6 +27,18 @@ localKey作为key
 
 清除所有叠加的图片，并删除存储数据
 
+* CardVisualize.RegCardHoverEvent(string uuid, fun(CardAccessBridge card, TooltipText tooltip) function)
+
+注册卡牌OnHover回调，可以修改tooltip对象
+
+** TooltipText
+
+  public string TooltipTitle
+  public string TooltipContent
+  public int Priority
+  public float NormalizedHoldTime
+  public string HoldText
+
 * 已知问题
 ====
 * 由于多张卡牌重新生成后排序并不固定，所以持久性存储不一定能生效。
@@ -45,6 +57,8 @@ localKey作为key
 ** Destroy() // 删除界面对象
 ** Reset() // 重置界面状态
 ** FullInit() // 初始化界面(更新状态变更)
+** SetPosition(float x, float y)
+** SetSize(float width, float height)
 * fields:
 ** Name : string
 ** Size : UnityEngine.Vector2
@@ -60,10 +74,31 @@ localKey作为key
 ** Color : UnityEngine.Color
 ** Sprite : string
 
+=== UICard : UIImage
+相当于俩Image组合，前景和背景，共享Color设置
+
+* methods:
+** SetSubPosition(float x, float y)
+** SetSubSize(float width, float height)
+* fields:
+** SubSpriteName : string
+
 === UIText : CommonUIBase
 * fields:
 ** FontSize : float
 ** Text : string
+** TextAlignment : TextAlignmentOptions
+
+=== UIButton : UIImage
+相当于Image上组合一个Text，常规按钮结构
+
+* methods:
+** SetSubPosition(float x, float y)
+** SetSubSize(float width, float height)
+* fields:
+** FontSize : float
+** Label : string
+** TextAlignment : TextAlignmentOptions
 
 === UIPanel : UIImage
 用来容纳其他组件，支持展示个背景
@@ -75,7 +110,9 @@ localKey作为key
 * methods:
 ** UIPanel AddPanel(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)
 ** UIImage AddImage(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)
+** UICard AddCard(string name, string image, string subImage, float x = 0, float y = 0, float width = 100, float height = 100)
 ** UIText AddText(string name, string text, float fontSize, float x = 0, float y = 0, float width = 100, float height = 100)
+** UIButton AddButton(string name, string image, string label, float fontSize, float x = 0, float y = 0, float width = 100, float height = 100)
 ** UIScrollPanel AddScrollPanel(string name, bool horizontalScroll, float x = 0, float y = 0, float width = 100, float height = 100, float scrollSpeed = 1)
 ** UIScrollRect AddScrollRect(string name, bool horizontalScroll, float x = 0, float y = 0, float width = 100, float height = 100, float scrollSpeed = 1, bool mask = false)
 
@@ -99,6 +136,48 @@ localKey作为key
 
 * fields:
 ** Mask : bool
+
+=== Enums
+
+==== Enums.TextAlignmentOptions
+
+  TopLeft = 257
+  Top = 258
+  TopRight = 260
+  TopJustified = 264
+  TopFlush = 272
+  TopGeoAligned = 288
+  Left = 513
+  Center = 514
+  Right = 516
+  Justified = 520
+  Flush = 528
+  CenterGeoAligned = 544
+  BottomLeft = 1025
+  Bottom = 1026
+  BottomRight = 1028
+  BottomJustified = 1032
+  BottomFlush = 1040
+  BottomGeoAligned = 1056
+  BaselineLeft = 2049
+  Baseline = 2050
+  BaselineRight = 2052
+  BaselineJustified = 2056
+  BaselineFlush = 2064
+  BaselineGeoAligned = 2080
+  MidlineLeft = 4097
+  Midline = 4098
+  MidlineRight = 4100
+  MidlineJustified = 4104
+  MidlineFlush = 4112
+  MidlineGeoAligned = 4128
+  CaplineLeft = 8193
+  Capline = 8194
+  CaplineRight = 8196
+  CaplineJustified = 8200
+  CaplineFlush = 8208
+  CaplineGeoAligned = 8224
+  Converted = 65535
 
 == ZGameSystem
 

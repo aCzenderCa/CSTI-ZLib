@@ -5,7 +5,7 @@
         <RootNamespace>CSTI_ZLib</RootNamespace>
         <Nullable>enable</Nullable>
         <LangVersion>preview</LangVersion>
-        <Version>1.0.2</Version>
+        <Version>1.0.3</Version>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

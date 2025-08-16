@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CSTI_LuaActionSupport.LuaCodeHelper;
 using HarmonyLib;
 
 namespace CSTI_ZLib.Patcher;
@@ -19,6 +20,7 @@ public static class CardVisualPatcher
     }
 
     private static readonly List<CardClickDelegate> OnCardClicks = [];
+    public static Dictionary<string, Action<CardAccessBridge, TooltipText>?> CardHoverEvents;
 
 
     [HarmonyPatch(typeof(InGameCardBase), nameof(InGameCardBase.OnPointerClick)), HarmonyPrefix]
@@ -34,5 +36,16 @@ public static class CardVisualPatcher
         }
 
         return true;
+    }
+
+
+    [HarmonyPatch(typeof(InGameCardBase), nameof(InGameCardBase.OnHoverEnter)), HarmonyPrefix]
+    private static void OnHoverEnterPatch(InGameCardBase __instance)
+    {
+        var uniqueID = __instance.CardModel?.UniqueID;
+        if (!string.IsNullOrEmpty(uniqueID) && CardHoverEvents.TryGetValue(uniqueID!, out var onHover))
+        {
+            onHover?.Invoke(new CardAccessBridge(__instance), __instance.MyTooltip);
+        }
     }
 }
