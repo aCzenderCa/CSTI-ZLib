@@ -47,6 +47,19 @@ public class UIImage : CommonUIBase
         if (ModLoader.ModLoader.SpriteDict.TryGetValue(Sprite, out var sprite))
         {
             ImageCom.sprite = sprite;
+            var ratio = sprite.rect.width / sprite.rect.height;
+            if (Size is { x: < 0, y: < 0 })
+            {
+                Self.sizeDelta = sprite.rect.size;
+            }
+            else if (Size is { x: < 0, y: > 0 })
+            {
+                Self.sizeDelta = new Vector2(ratio * Size.y, Size.y);
+            }
+            else if (Size is { x: > 0, y: < 0 })
+            {
+                Self.sizeDelta = new Vector2(Size.x, Size.x / ratio);
+            }
         }
 
         ImageCom.enabled = ImageCom.sprite;

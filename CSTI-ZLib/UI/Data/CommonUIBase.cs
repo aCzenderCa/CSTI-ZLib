@@ -91,7 +91,7 @@ public class CommonUIBase : IDisposable
     protected virtual void Init()
     {
         if (Self == null) return;
-        Self.sizeDelta = Size;
+        Self.sizeDelta = new Vector2(Mathf.Max(0, Size.x), Mathf.Max(0, Size.y));
         Self.anchoredPosition = LocalPosition;
         Self.localRotation = Quaternion.Euler(0, 0, Rotation);
         Self.localScale = LocalScale;
