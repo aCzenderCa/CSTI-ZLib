@@ -19,5 +19,15 @@ namespace CSTI_ZLib.LuaLIbs.Utils
             if (!component) component = tr.gameObject.AddComponent<T>();
             return component;
         }
+
+        public static void DestroyCom<T>(this Transform tr)
+            where T : Component
+        {
+            var component = tr.GetComponent<T>();
+            if (component)
+            {
+                Object.Destroy(component);
+            }
+        }
     }
 }

@@ -4,14 +4,23 @@ namespace CSTI_ZLib.LuaLIbs.Utils
 {
     public static class TransUtils
     {
-        public static Transform GetChildOrCreate(this Transform t, string name)
+        public static RectTransform GetChildOrCreate(this Transform t, string name)
         {
-            var child = t.Find(name);
+            RectTransform? child = null;
+            var childCount = t.childCount;
+            for (var i = 0; i < childCount; i++)
+            {
+                var c = t.GetChild(i);
+                if (c == null) continue;
+                if (c.name != name) continue;
+                child = (RectTransform)c;
+            }
+
             if (child == null)
             {
-                var cimg = new GameObject(name, typeof(RectTransform));
-                cimg.transform.SetParentAndReset(t);
-                child = cimg.GetComponent<RectTransform>();
+                var obj = new GameObject(name, typeof(RectTransform));
+                obj.transform.SetParentAndReset(t);
+                child = obj.GetComponent<RectTransform>();
             }
 
             return child;
