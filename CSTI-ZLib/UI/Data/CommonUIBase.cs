@@ -14,14 +14,54 @@ namespace CSTI_ZLib.UI.Data
         public Vector2 LocalPosition;
         public float Rotation;
         public Vector2 LocalScale = Vector2.one;
-        protected Action? OnClick;
+
+        #region Event
+
+        private EventOnClick? _eventOnClick;
+        private event Action? IntelOnClick;
+
+        protected event Action? OnClick
+        {
+            add
+            {
+                IntelOnClick += value;
+                UpdateOnClick();
+            }
+            remove
+            {
+                IntelOnClick -= value;
+                UpdateOnClick();
+            }
+        }
+
+        private void UpdateOnClick()
+        {
+            if (Self == null) return;
+            _eventOnClick = Self.GetOrAdd<EventOnClick>();
+            _eventOnClick.OnClick -= EventOnClickOnClick;
+            _eventOnClick.OnClick += EventOnClickOnClick;
+        }
+
+        protected virtual void EventOnClickOnClick()
+        {
+            IntelOnClick?.Invoke();
+        }
 
         public void AddOnClick(Action action)
         {
             OnClick += action;
         }
 
-        public virtual void Build(Transform parent)
+        public void RemoveOnClick(Action action)
+        {
+            OnClick -= action;
+        }
+
+        #endregion
+
+        public Rect Rect => new(LocalPosition, Size);
+
+        public void Build(Transform parent)
         {
             Self = parent.GetChildOrCreate(Name);
             FullInit();
@@ -41,13 +81,17 @@ namespace CSTI_ZLib.UI.Data
             Self.localRotation = Quaternion.Euler(0, 0, Rotation);
             Self.localScale = LocalScale;
 
-            if (OnClick != null)
+            if (IntelOnClick != null)
             {
-                Self.GetOrAdd<EventOnClick>().OnClick += OnClick;
+                UpdateOnClick();
             }
         }
 
         protected virtual void ValidInit()
+        {
+        }
+
+        public virtual void Reset()
         {
         }
 
@@ -62,10 +106,7 @@ namespace CSTI_ZLib.UI.Data
         public virtual void Dispose()
         {
             if (Self == null) return;
-            if (OnClick != null)
-            {
-                Self.DestroyCom<EventOnClick>();
-            }
+            Self.DestroyCom<EventOnClick>();
         }
 
         ~CommonUIBase()

@@ -4,18 +4,16 @@ namespace CSTI_ZLib.UI.Data
 {
     public class UIWindow : UIPanel
     {
-        private static Transform? _canvasRoot;
-
         public static Transform? CanvasRoot
         {
             get
             {
-                if (_canvasRoot == null && GraphicsManager.Instance)
+                if (field == null && GraphicsManager.Instance)
                 {
-                    _canvasRoot = GraphicsManager.Instance.MenuObject.transform.parent;
+                    field = GraphicsManager.Instance.MenuObject.transform.parent;
                 }
 
-                return _canvasRoot;
+                return field;
             }
         }
 
@@ -39,6 +37,32 @@ namespace CSTI_ZLib.UI.Data
             {
                 Self.gameObject.SetActive(false);
             }
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
+            foreach (var child in Children)
+            {
+                child.Reset();
+            }
+        }
+
+        protected override void Init()
+        {
+            if (Self != null) Self.gameObject.SetActive(false);
+            base.Init();
+        }
+
+        protected override void ValidInit()
+        {
+            base.ValidInit();
+            if (Self != null) Self.gameObject.SetActive(true);
+        }
+
+        public override void Dispose()
+        {
+            Destroy();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace CSTI_ZLib.UI.Data
             }
         }
         
-        protected Image? Image;
+        protected Image? ImageCom;
         public Color Color = Color.white;
         public string Sprite = "";
 
@@ -42,14 +42,14 @@ namespace CSTI_ZLib.UI.Data
             if (Self == null) return;
             if (string.IsNullOrEmpty(Sprite)) return;
 
-            if (Image == null) Image = Self.GetOrAdd<Image>();
-            Image.color = Color;
+            if (ImageCom == null) ImageCom = Self.GetOrAdd<Image>();
+            ImageCom.color = Color;
             if (ModLoader.ModLoader.SpriteDict.TryGetValue(Sprite, out var sprite))
             {
-                Image.sprite = sprite;
+                ImageCom.sprite = sprite;
             }
 
-            Image.enabled = Image.sprite;
+            ImageCom.enabled = ImageCom.sprite;
         }
     }
 }

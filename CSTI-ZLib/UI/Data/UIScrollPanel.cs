@@ -1,39 +1,47 @@
 ﻿using CSTI_ZLib.LuaLIbs.Utils;
 using CSTI_ZLib.UI.Com;
+using CSTI_ZLib.UI.Utils;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace CSTI_ZLib.UI.Data
 {
     public class UIScrollPanel : UIPanel
     {
         protected EventOnScroll? EventOnScroll;
+        protected Vector2 TotalScrollOffset;
+        protected Rect ChildrenBounds;
+
         public bool HorizontalScrollEnable;
         public bool VerticalScrollEnable;
-        public Rect ChildrenBounds;
         public float ScrollSpeed = 1;
-        public Vector2 TotalScrollOffset;
+
+        protected void UpdateChildrenBounds()
+        {
+            foreach (var uiBase in Children)
+            {
+                ChildrenBounds.UpdateChildrenBounds(uiBase.Rect);
+            }
+        }
 
         protected override void ValidInit()
         {
             base.ValidInit();
             if (Self == null) return;
+
             EventOnScroll = Self.GetOrAdd<EventOnScroll>();
             EventOnScroll.Scroll -= EventScrollScroll;
             EventOnScroll.Scroll += EventScrollScroll;
-
-            foreach (var uiBase in Children)
-            {
-                if (ChildrenBounds.xMin > uiBase.LocalPosition.x) ChildrenBounds.xMin = uiBase.LocalPosition.x;
-                if (ChildrenBounds.yMin > uiBase.LocalPosition.y) ChildrenBounds.yMin = uiBase.LocalPosition.y;
-                if (ChildrenBounds.xMax < uiBase.LocalPosition.x + uiBase.Size.x)
-                    ChildrenBounds.xMax = uiBase.LocalPosition.x + uiBase.Size.x;
-                if (ChildrenBounds.yMax < uiBase.LocalPosition.y + uiBase.Size.y)
-                    ChildrenBounds.yMax = uiBase.LocalPosition.y + uiBase.Size.y;
-            }
+            Self.sizeDelta = Size;
+            UpdateChildrenBounds();
         }
 
-        private void EventScrollScroll(Vector2 scrollDelta, RectTransform self)
+        public override void Reset()
+        {
+            base.Reset();
+            TotalScrollOffset = Vector2.zero;
+        }
+
+        protected virtual void EventScrollScroll(Vector2 scrollDelta, RectTransform self)
         {
             if (HorizontalScrollEnable)
             {

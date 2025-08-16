@@ -10,6 +10,8 @@ namespace CSTI_ZLib.UI.Data
     {
         public List<CommonUIBase> Children = new();
 
+        #region Add
+
         public UIPanel AddPanel(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)
         {
             var uiPanel = new UIPanel
@@ -54,8 +56,8 @@ namespace CSTI_ZLib.UI.Data
             return uiText;
         }
 
-        public UIScrollPanel AddScrollPanel(string name, bool horizontalScroll, float scrollSpeed = 1, float x = 0, float y = 0, float width = 100,
-            float height = 100)
+        public UIScrollPanel AddScrollPanel(string name, bool horizontalScroll, float x = 0, float y = 0,
+            float width = 100, float height = 100, float scrollSpeed = 1)
         {
             var uiScrollPanel = new UIScrollPanel
             {
@@ -70,6 +72,26 @@ namespace CSTI_ZLib.UI.Data
             Children.Add(uiScrollPanel);
             return uiScrollPanel;
         }
+
+        public UIScrollRect AddScrollRect(string name, bool horizontalScroll, float x = 0, float y = 0,
+            float width = 100, float height = 100, float scrollSpeed = 1, bool mask = false)
+        {
+            var uiScrollRect = new UIScrollRect
+            {
+                Name = name,
+                LocalPosition = new Vector2(x, y),
+                Size = new Vector2(width, height),
+                Rotation = 0,
+                HorizontalScrollEnable = horizontalScroll,
+                VerticalScrollEnable = !horizontalScroll,
+                ScrollSpeed = scrollSpeed,
+                Mask = mask,
+            };
+            Children.Add(uiScrollRect);
+            return uiScrollRect;
+        }
+
+        #endregion
 
         protected override void Init()
         {
@@ -86,6 +108,12 @@ namespace CSTI_ZLib.UI.Data
                 }
             }
 
+            BuildChildren();
+        }
+
+        protected virtual void BuildChildren()
+        {
+            if (Self == null) return;
             foreach (var uiBase in Children)
             {
                 if (uiBase.Self == null)
