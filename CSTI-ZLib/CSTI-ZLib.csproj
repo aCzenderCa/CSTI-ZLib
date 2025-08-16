@@ -180,4 +180,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="UI\Utils\" />
+    </ItemGroup>
+
 </Project>
