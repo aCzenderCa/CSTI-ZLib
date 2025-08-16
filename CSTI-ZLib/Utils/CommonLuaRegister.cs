@@ -98,10 +98,10 @@ public static class CommonLuaRegister
             var result = fastReflectionDelegate(null, args);
             if (isVoidReturnType)
             {
-                lua.Push(result);
                 return 0;
             }
 
+            lua.Push(result);
             return 1;
         }
     }
