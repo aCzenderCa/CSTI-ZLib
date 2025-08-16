@@ -13,7 +13,7 @@ namespace CSTI_ZLib;
 [BepInDependency("zender.LuaActionSupport.LuaSupportRuntime")]
 public class MainRuntime : BaseUnityPlugin
 {
-    public const string Version = "1.0.1";
+    public const string Version = "1.0.2";
 
     public static Lua Lua => CardActionPatcher.LuaRuntime;
 

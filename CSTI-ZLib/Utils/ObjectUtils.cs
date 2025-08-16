@@ -2,7 +2,7 @@
 
 namespace CSTI_ZLib.Utils;
 
-public static class ObjectUtils
+public static class ObjectTransformUtils
 {
     public static object? TransformObject(this object obj, TypeCode from, TypeCode to)
     {
