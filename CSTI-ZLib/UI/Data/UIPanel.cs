@@ -198,16 +198,4 @@ public class UIPanel : UIImage
             }
         }
     }
-
-    public override void Dispose()
-    {
-        base.Dispose();
-
-        foreach (var uiBase in Children)
-        {
-            uiBase.Dispose();
-        }
-
-        if (Self != null) Object.Destroy(Self.transform);
-    }
 }

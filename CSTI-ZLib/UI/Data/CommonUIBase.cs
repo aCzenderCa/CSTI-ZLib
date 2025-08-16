@@ -58,7 +58,7 @@ public class CommonUIBase : IDisposable
     {
         OnClick -= action;
     }
-    
+
     public void AddOnClick(LuaFunction action)
     {
         OnClick += action.Map();

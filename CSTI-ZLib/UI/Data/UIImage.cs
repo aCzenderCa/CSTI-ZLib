@@ -17,11 +17,11 @@ public class UIImage : CommonUIBase
             {
                 _defaultSprite = UnityEngine.Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 1, 1), Vector2.zero);
             }
-                
+
             return _defaultSprite;
         }
     }
-        
+
     public Color Color = Color.white;
     public string Sprite = "";
 
