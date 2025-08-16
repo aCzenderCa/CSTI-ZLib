@@ -13,6 +13,11 @@ public class UIWindow : UIPanel
                 field = GraphicsManager.Instance.MenuObject.transform.parent;
             }
 
+            if (field == null && Object.FindObjectOfType<MainMenu>() is var menu && menu)
+            {
+                field = menu.transform;
+            }
+
             return field;
         }
     }
