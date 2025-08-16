@@ -23,6 +23,7 @@ public class UIScrollPanel : UIPanel
         }
     }
 
+    // 在ValidInit计算子节点大小，确保布局已经确定
     protected override void ValidInit()
     {
         base.ValidInit();

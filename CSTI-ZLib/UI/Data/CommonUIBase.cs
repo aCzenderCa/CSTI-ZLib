@@ -1,6 +1,8 @@
 ﻿using System;
 using CSTI_ZLib.LuaLIbs.Utils;
 using CSTI_ZLib.UI.Com;
+using CSTI_ZLib.Utils;
+using NLua;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -47,14 +49,24 @@ public class CommonUIBase : IDisposable
         IntelOnClick?.Invoke();
     }
 
-    public void AddOnClick(Action action)
+    internal void AddOnClick(Action action)
     {
         OnClick += action;
     }
 
-    public void RemoveOnClick(Action action)
+    internal void RemoveOnClick(Action action)
     {
         OnClick -= action;
+    }
+    
+    public void AddOnClick(LuaFunction action)
+    {
+        OnClick += action.Map();
+    }
+
+    public void RemoveOnClick(LuaFunction action)
+    {
+        OnClick -= action.Map();
     }
 
     #endregion

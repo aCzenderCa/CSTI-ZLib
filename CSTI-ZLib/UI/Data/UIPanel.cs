@@ -9,6 +9,9 @@ namespace CSTI_ZLib.UI.Data;
 public class UIPanel : UIImage
 {
     public List<CommonUIBase> Children = new();
+    public bool GridLayoutEnable; // 当存在无限放置的轴时，优先在另一个轴上排列，否则优先水平排列，不存在无限放置的轴时，子节点数量存在上限
+    public int GridSizeHorizontal = 1; // 每行可以放置多少个UI节点，小于等于0表示无限
+    public int GridSizeVertical = -1; // 每列可以放置多少个UI节点，小于等于0表示无限
 
     #region Add
 
@@ -112,17 +115,82 @@ public class UIPanel : UIImage
             }
         }
 
-        BuildOrInitChildren();
+        BuildOrInitChildren(Self);
     }
 
-    protected virtual void BuildOrInitChildren()
+    protected virtual void BuildOrInitChildren(RectTransform parent)
     {
-        if (Self == null) return;
+        if (GridLayoutEnable)
+        {
+            var zMax = 0f;
+            var zCount = 0;
+            var wCount = 0;
+            var childPoint = default(Vector2);
+            if (GridSizeVertical < 1)
+            {
+                foreach (var child in Children)
+                {
+                    child.LocalPosition = childPoint;
+                    childPoint.x += child.Size.x;
+                    zCount++;
+                    zMax = Mathf.Max(zMax, child.LocalPosition.y);
+                    if (zCount >= GridSizeHorizontal)
+                    {
+                        childPoint.x = 0;
+                        childPoint.y += zMax;
+                        zMax = 0;
+                        zCount = 0;
+                    }
+                }
+            }
+            else if (GridSizeHorizontal < 1)
+            {
+                foreach (var child in Children)
+                {
+                    child.LocalPosition = childPoint;
+                    childPoint.y += child.Size.y;
+                    zCount++;
+                    zMax = Mathf.Max(zMax, child.LocalPosition.x);
+                    if (zCount >= GridSizeVertical)
+                    {
+                        childPoint.y = 0;
+                        childPoint.x += zMax;
+                        zMax = 0;
+                        zCount = 0;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var child in Children)
+                {
+                    child.LocalPosition = childPoint;
+                    childPoint.x += child.Size.x;
+                    zCount++;
+                    zMax = Mathf.Max(zMax, child.LocalPosition.y);
+                    if (zCount >= GridSizeHorizontal)
+                    {
+                        childPoint.x = 0;
+                        childPoint.y += zMax;
+                        zCount = 0;
+                        zMax = 0;
+                        wCount++;
+                        if (wCount >= GridSizeVertical)
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
         foreach (var uiBase in Children)
         {
             if (uiBase.Self == null)
             {
-                uiBase.Build(Self);
+                uiBase.Build(parent);
+                
+                
             }
             else
             {

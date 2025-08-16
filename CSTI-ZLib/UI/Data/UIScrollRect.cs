@@ -26,22 +26,10 @@ public class UIScrollRect : UIScrollPanel
         }
     }
 
-    protected override void BuildOrInitChildren()
+    protected override void BuildOrInitChildren(RectTransform parent)
     {
-        if (Self == null) return;
-        ContentRoot = Self.GetChildOrCreate("ContentRoot");
-
-        foreach (var uiBase in Children)
-        {
-            if (uiBase.Self == null)
-            {
-                uiBase.Build(ContentRoot);
-            }
-            else
-            {
-                uiBase.FullInit();
-            }
-        }
+        ContentRoot = parent.GetChildOrCreate("ContentRoot");
+        base.BuildOrInitChildren(ContentRoot);
     }
 
     protected override void EventScrollScroll(Vector2 scrollDelta, RectTransform self)
