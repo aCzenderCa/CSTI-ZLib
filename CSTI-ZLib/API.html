@@ -563,6 +563,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_uiscrollrect_uiscrollpanel">UIScrollRect : UIScrollPanel</a></li>
 </ul>
 </li>
+<li><a href="#_zgamesystem">ZGameSystem</a>
+<ul class="sectlevel2">
+<li><a href="#_zgamesystem_registercardtpstring_uuid_actioncardaccessbridge_action">ZGameSystem.RegisterCardTp(string uuid, Action&lt;CardAccessBridge&gt; action)</a></li>
+<li><a href="#_zgamesystem_registercardonclickstring_uuid_funccardaccessbridge_bool_action">ZGameSystem.RegisterCardOnClick(string uuid, Func&lt;CardAccessBridge, bool&gt; action)</a></li>
+</ul>
+</li>
 <li><a href="#_注">注</a></li>
 </ul>
 </div>
@@ -774,6 +780,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist">
 <ul>
 <li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>GridLayoutEnable : bool</p>
+</li>
+<li>
+<p>GridSizeHorizontal : bool</p>
+</li>
+<li>
+<p>GridSizeVertical : bool</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
 <p>methods:</p>
 <div class="ulist">
 <ul>
@@ -870,6 +892,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
+<h2 id="_zgamesystem">ZGameSystem</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_zgamesystem_registercardtpstring_uuid_actioncardaccessbridge_action">ZGameSystem.RegisterCardTp(string uuid, Action&lt;CardAccessBridge&gt; action)</h3>
+<div class="paragraph">
+<p>对uuid对应的卡牌注册每帧执行的函数，不可取消</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_zgamesystem_registercardonclickstring_uuid_funccardaccessbridge_bool_action">ZGameSystem.RegisterCardOnClick(string uuid, Func&lt;CardAccessBridge, bool&gt; action)</h3>
+<div class="paragraph">
+<p>对uuid对应的卡牌注册点击卡牌时执行的函数，返回true表示已处理该点击事件并阻断点击事件的继续传播，不可取消</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_注">注</h2>
 <div class="sectionbody">
 <div class="ulist">
@@ -887,7 +926,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-16 13:24:39 +0800
+Last updated 2025-08-16 16:51:39 +0800
 </div>
 </div>
 <script>

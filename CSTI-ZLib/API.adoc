@@ -68,6 +68,10 @@ localKey作为key
 === UIPanel : UIImage
 用来容纳其他组件，支持展示个背景
 
+* fields:
+** GridLayoutEnable : bool
+** GridSizeHorizontal : bool
+** GridSizeVertical : bool
 * methods:
 ** UIPanel AddPanel(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)
 ** UIImage AddImage(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)
@@ -95,6 +99,16 @@ localKey作为key
 
 * fields:
 ** Mask : bool
+
+== ZGameSystem
+
+=== ZGameSystem.RegisterCardTp(string uuid, Action<CardAccessBridge> action)
+
+对uuid对应的卡牌注册每帧执行的函数，不可取消
+
+=== ZGameSystem.RegisterCardOnClick(string uuid, Func<CardAccessBridge, bool> action)
+
+对uuid对应的卡牌注册点击卡牌时执行的函数，返回true表示已处理该点击事件并阻断点击事件的继续传播，不可取消
 
 == 注
 * 参数名后跟?代表该参数可选，默认值为空
