@@ -2,15 +2,14 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CSTI_ZLib.UI.Com
-{
-    public class EventOnClick : MonoBehaviour, IPointerClickHandler
-    {
-        public event Action? OnClick;
+namespace CSTI_ZLib.UI.Com;
 
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            OnClick?.Invoke();
-        }
+public class EventOnClick : MonoBehaviour, IPointerClickHandler
+{
+    public event Action? OnClick;
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        OnClick?.Invoke();
     }
 }

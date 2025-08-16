@@ -26,7 +26,7 @@ public class UIScrollRect : UIScrollPanel
         }
     }
 
-    protected override void BuildChildren()
+    protected override void BuildOrInitChildren()
     {
         if (Self == null) return;
         ContentRoot = Self.GetChildOrCreate("ContentRoot");

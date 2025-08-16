@@ -1,68 +1,67 @@
 ﻿using UnityEngine;
 
-namespace CSTI_ZLib.UI.Data
+namespace CSTI_ZLib.UI.Data;
+
+public class UIWindow : UIPanel
 {
-    public class UIWindow : UIPanel
+    public static Transform? CanvasRoot
     {
-        public static Transform? CanvasRoot
+        get
         {
-            get
+            if (field == null && GraphicsManager.Instance)
             {
-                if (field == null && GraphicsManager.Instance)
-                {
-                    field = GraphicsManager.Instance.MenuObject.transform.parent;
-                }
-
-                return field;
-            }
-        }
-
-        public void Open()
-        {
-            if (Self != null)
-            {
-                Self.gameObject.SetActive(true);
-                FullInit();
-                return;
+                field = GraphicsManager.Instance.MenuObject.transform.parent;
             }
 
-            if (CanvasRoot == null) return;
-
-            Build(CanvasRoot);
+            return field;
         }
+    }
 
-        public void Close()
+    public void Open()
+    {
+        if (Self != null)
         {
-            if (Self != null)
-            {
-                Self.gameObject.SetActive(false);
-            }
+            Self.gameObject.SetActive(true);
+            FullInit();
+            return;
         }
 
-        public override void Reset()
-        {
-            base.Reset();
-            foreach (var child in Children)
-            {
-                child.Reset();
-            }
-        }
+        if (CanvasRoot == null) return;
 
-        protected override void Init()
-        {
-            if (Self != null) Self.gameObject.SetActive(false);
-            base.Init();
-        }
+        Build(CanvasRoot);
+    }
 
-        protected override void ValidInit()
+    public void Close()
+    {
+        if (Self != null)
         {
-            base.ValidInit();
-            if (Self != null) Self.gameObject.SetActive(true);
+            Self.gameObject.SetActive(false);
         }
+    }
 
-        public override void Dispose()
+    public override void Reset()
+    {
+        base.Reset();
+        foreach (var child in Children)
         {
-            Destroy();
+            child.Reset();
         }
+    }
+
+    protected override void Init()
+    {
+        if (Self != null) Self.gameObject.SetActive(false);
+        base.Init();
+    }
+
+    protected override void ValidInit()
+    {
+        base.ValidInit();
+        if (Self != null) Self.gameObject.SetActive(true);
+    }
+
+    public override void Dispose()
+    {
+        Destroy();
     }
 }

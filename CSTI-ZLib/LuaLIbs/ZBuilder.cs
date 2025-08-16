@@ -2,22 +2,21 @@
 using CSTI_ZLib.Utils;
 using UnityEngine;
 
-namespace CSTI_ZLib.LuaLIbs
+namespace CSTI_ZLib.LuaLIbs;
+
+[LuaLib]
+public static class ZBuilder
 {
-    [LuaLib]
-    public static class ZBuilder
+    #region Init
+
+    internal static void LuaLibInit()
     {
-        #region Init
+    }
 
-        internal static void LuaLibInit()
-        {
-        }
+    #endregion
 
-        #endregion
-
-        public static CardDataBase CreateCard(string id, string name, string description)
-        {
-            return new CardDataBase(id, name, description);
-        }
+    public static CardDataBase CreateCard(string id, string name, string description)
+    {
+        return new CardDataBase(id, name, description);
     }
 }
