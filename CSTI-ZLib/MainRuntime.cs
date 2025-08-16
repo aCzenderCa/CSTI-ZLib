@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using BepInEx;
 using CSTI_LuaActionSupport.AllPatcher;
+using CSTI_LuaActionSupport.LuaCodeHelper;
 using CSTI_ZLib.Patcher.CSTI_LuaActionSupport;
 using CSTI_ZLib.UI.Data;
 using CSTI_ZLib.Utils;
 using HarmonyLib;
 using NLua;
+using TMPro;
 
 namespace CSTI_ZLib;
 
@@ -26,6 +28,7 @@ public class MainRuntime : BaseUnityPlugin
     private void Start()
     {
         CommonLuaRegister.RegisterAll();
+        Lua.Register<TextAlignmentOptions>($"Enums.{nameof(TextAlignmentOptions)}");
     }
 
     private static UIWindow TestUI()

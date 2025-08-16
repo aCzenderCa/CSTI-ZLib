@@ -18,8 +18,6 @@ public class UIText : CommonUIBase
         TextCom = Self.GetOrAdd<TextMeshProUGUI>();
         TextCom.text = Text;
         TextCom.fontSize = FontSize;
-        TextCom.verticalAlignment = VerticalAlignmentOptions.Middle;
-        TextCom.horizontalAlignment = HorizontalAlignmentOptions.Center;
         TextCom.alignment = TextAlignment;
     }
 }
