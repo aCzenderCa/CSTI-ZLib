@@ -3,34 +3,39 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 
-namespace CSTI_ZLib.Utils
+namespace CSTI_ZLib.Utils;
+
+[AttributeUsage(AttributeTargets.Class)]
+public class LuaLibAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class LuaLibAttribute : Attribute
-    {
-    }
+}
 
-    public static class CommonLuaRegister
+public static class CommonLuaRegister
+{
+    public static void RegisterAll()
     {
-        public static void RegisterAll()
+        foreach (var luaLibType in from assembly in AccessTools.AllAssemblies()
+                 from type in AccessTools.GetTypesFromAssembly(assembly)
+                 where type.GetCustomAttribute(typeof(LuaLibAttribute)) != null
+                 select type)
         {
-            foreach (var luaLibType in from assembly in AccessTools.AllAssemblies()
-                     from type in AccessTools.GetTypesFromAssembly(assembly)
-                     where type.GetCustomAttribute(typeof(LuaLibAttribute)) != null
-                     select type)
+            MainRuntime.Lua.NewTable(luaLibType.Name);
+            foreach (var methodInfo in luaLibType.GetMethods(
+                         BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static))
             {
-                MainRuntime.Lua.NewTable(luaLibType.Name);
-                foreach (var methodInfo in luaLibType.GetMethods(
-                             BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Static))
-                {
-                    MainRuntime.Lua.RegisterFunction($"{luaLibType.Name}.{methodInfo.Name}", methodInfo);
-                }
+                MainRuntime.Lua.RegisterFunction($"{luaLibType.Name}.{methodInfo.Name}", methodInfo);
+            }
+        }
 
-                var luaLibInitFunc = AccessTools.DeclaredMethod(luaLibType, "LuaLibInit");
-                if (luaLibInitFunc != null)
-                {
-                    luaLibInitFunc.Invoke(null, Array.Empty<object>());
-                }
+        foreach (var luaLibType in from assembly in AccessTools.AllAssemblies()
+                 from type in AccessTools.GetTypesFromAssembly(assembly)
+                 where type.GetCustomAttribute(typeof(LuaLibAttribute)) != null
+                 select type)
+        {
+            var luaLibInitFunc = AccessTools.DeclaredMethod(luaLibType, "LuaLibInit");
+            if (luaLibInitFunc != null)
+            {
+                luaLibInitFunc.Invoke(null, []);
             }
         }
     }
