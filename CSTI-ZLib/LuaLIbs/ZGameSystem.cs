@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using CSTI_LuaActionSupport.LuaCodeHelper;
 using CSTI_ZLib.Patcher;
+using CSTI_ZLib.Patcher.Utils;
 using CSTI_ZLib.Utils;
+using NLua;
 
 namespace CSTI_ZLib.LuaLIbs;
 
@@ -14,6 +16,7 @@ public static class ZGameSystem
     internal static void LuaLibInit()
     {
         GamePatcher.OnPassTp += GamePatcherOnOnPassTp;
+        CardVisualPatcher.CardClickEvent += CardVisualPatcherOnCardClickEvent;
     }
 
     #endregion
@@ -27,12 +30,59 @@ public static class ZGameSystem
             var uniqueID = card?.CardModel?.UniqueID;
             if (uniqueID != null && TpSystems.TryGetValue(uniqueID, out var tpSystem))
             {
-                tpSystem(new CardAccessBridge(card));
+                var cardAccessBridge = new CardAccessBridge(card);
+                foreach (var action in tpSystem)
+                {
+                    action(cardAccessBridge);
+                }
             }
         }
     }
 
+    private static bool CardVisualPatcherOnCardClickEvent(InGameCardBase card)
+    {
+        var uniqueID = card.CardModel.UniqueID;
+        if (uniqueID != null && ClickSystems.TryGetValue(uniqueID, out var clickSystem))
+        {
+            var cardAccessBridge = new CardAccessBridge(card);
+            foreach (var action in clickSystem)
+            {
+                if (action(cardAccessBridge))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     #endregion
 
-    public static Dictionary<string, Action<CardAccessBridge>> TpSystems = new();
+    private static readonly Dictionary<string, List<Action<CardAccessBridge>>> TpSystems = new();
+    private static readonly Dictionary<string, List<Func<CardAccessBridge, bool>>> ClickSystems = new();
+
+    #region Reg
+
+    internal static void RegisterCardTp(string uuid, Action<CardAccessBridge> action)
+    {
+        TpSystems.Add(uuid, action);
+    }
+
+    internal static void RegisterCardOnClick(string uuid, Func<CardAccessBridge, bool> action)
+    {
+        ClickSystems.Add(uuid, action);
+    }
+
+    public static void RegisterCardTp(string uuid, LuaFunction action)
+    {
+        TpSystems.Add(uuid, action.Map<CardAccessBridge>());
+    }
+
+    public static void RegisterCardOnClick(string uuid, LuaFunction action)
+    {
+        ClickSystems.Add(uuid, bridge => action.Call(bridge) is { Length: > 0 } results && results[0] is true);
+    }
+
+    #endregion
 }
