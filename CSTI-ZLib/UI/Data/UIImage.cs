@@ -7,6 +7,7 @@ namespace CSTI_ZLib.UI.Data;
 public class UIImage : CommonUIBase
 {
     private static Sprite? _defaultSprite;
+    protected Image? ImageCom;
 
     protected static Sprite DefaultSprite
     {
@@ -21,7 +22,6 @@ public class UIImage : CommonUIBase
         }
     }
         
-    protected Image? ImageCom;
     public Color Color = Color.white;
     public string Sprite = "";
 

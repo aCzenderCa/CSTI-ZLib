@@ -548,33 +548,65 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article">
 <div id="header">
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_cardvisualize">CardVisualize</a></li>
+<li><a href="#_zgameui">ZGameUI</a>
+<ul class="sectlevel2">
+<li><a href="#_commonuibase">CommonUIBase</a></li>
+<li><a href="#_uiimage_commonuibase">UIImage : CommonUIBase</a></li>
+<li><a href="#_uitext_commonuibase">UIText : CommonUIBase</a></li>
+<li><a href="#_uipanel_uiimage">UIPanel : UIImage</a></li>
+<li><a href="#_uiwindow_uipanel">UIWindow : UIPanel</a></li>
+<li><a href="#_uiscrollpanel_uipanel">UIScrollPanel : UIPanel</a></li>
+<li><a href="#_uiscrollrect_uiscrollpanel">UIScrollRect : UIScrollPanel</a></li>
+</ul>
+</li>
+<li><a href="#_注">注</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-<div class="sect2">
-<h3 id="_cardvisualize">CardVisualize</h3>
+<div class="sect1">
+<h2 id="_cardvisualize">CardVisualize</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>叠加上去的元素有其唯一key，同一key重复设置效果为替换</p>
 </div>
-<div class="sect3">
-<h4 id="_seticoncard_string_icon_x_y_width_height_overwritekey">SetIcon(card, string icon, x, y, width, height, overwriteKey?)</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>CardVisualize.SetIcon(card, string icon, x, y, width, height, overwriteKey?)</p>
+</li>
+</ul>
+</div>
 <div class="paragraph">
 <p>按名称将图片icon叠加到card上</p>
 </div>
 <div class="paragraph">
 <p>icon名作为key</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>CardVisualize.SetIconByCard(card, iconCard, x, y, width, height, overwriteKey?)</p>
+</li>
+</ul>
 </div>
-<div class="sect3">
-<h4 id="_seticonbycardcard_iconcard_x_y_width_height_overwritekey">SetIconByCard(card, iconCard, x, y, width, height, overwriteKey?)</h4>
 <div class="paragraph">
 <p>将iconCard的图标叠加到card上</p>
 </div>
 <div class="paragraph">
 <p>card的对象名作为key(不同inGame卡牌直接不同)</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>CardVisualize.SetText(card, localKey, x, y, width, height, overwriteKey?)</p>
+</li>
+</ul>
 </div>
-<div class="sect3">
-<h4 id="_settextcard_localkey_x_y_width_height_overwritekey">SetText(card, localKey, x, y, width, height, overwriteKey?)</h4>
 <div class="paragraph">
 <p>将本地化字符串键localKey(找不到对应项则直接把key的内容显示上去)叠加到card上</p>
 </div>
@@ -584,15 +616,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>localKey作为key</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>CardVisualize.ClearIcon(card)</p>
+</li>
+</ul>
 </div>
-<div class="sect3">
-<h4 id="_cleariconcard">ClearIcon(card)</h4>
 <div class="paragraph">
 <p>清除所有叠加的图片，并删除存储数据</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p>已知问题</p>
+</li>
+</ul>
 </div>
-<div class="sect3">
-<h4 id="_已知问题">已知问题</h4>
 <div class="exampleblock">
 <div class="content">
 <div class="ulist">
@@ -609,10 +649,245 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="_zgameui">ZGameUI</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>ZGameUI.CreateWindow(name, string backgroundSprite?, float x = 0, float y = 0, float width = 100, float height = 100):UIWindow</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>创建UIWindow</p>
+</div>
+<div class="sect2">
+<h3 id="_commonuibase">CommonUIBase</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>AddOnClick(Action) // 请自行确保删除时的action和添加时一致(保留action引用)</p>
+</li>
+<li>
+<p>RemoveOnClick(Action)</p>
+</li>
+<li>
+<p>Destroy() // 删除界面对象</p>
+</li>
+<li>
+<p>Reset() // 重置界面状态</p>
+</li>
+<li>
+<p>FullInit() // 初始化界面(更新状态变更)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Name : string</p>
+</li>
+<li>
+<p>Size : UnityEngine.Vector2</p>
+</li>
+<li>
+<p>LocalPosition : UnityEngine.Vector2</p>
+</li>
+<li>
+<p>Rotation : float</p>
+</li>
+<li>
+<p>LocalScale : UnityEngine.Vector2</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uiimage_commonuibase">UIImage : CommonUIBase</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>SetColor(float r, float g, float b)</p>
+</li>
+<li>
+<p>SetAlpha(float a)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Color : UnityEngine.Color</p>
+</li>
+<li>
+<p>Sprite : string</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uitext_commonuibase">UIText : CommonUIBase</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>FontSize : float</p>
+</li>
+<li>
+<p>Text : string</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uipanel_uiimage">UIPanel : UIImage</h3>
+<div class="paragraph">
+<p>用来容纳其他组件，支持展示个背景</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>UIPanel AddPanel(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)</p>
+</li>
+<li>
+<p>UIImage AddImage(string name, string image, float x = 0, float y = 0, float width = 100, float height = 100)</p>
+</li>
+<li>
+<p>UIText AddText(string name, string text, float fontSize, float x = 0, float y = 0, float width = 100, float height = 100)</p>
+</li>
+<li>
+<p>UIScrollPanel AddScrollPanel(string name, bool horizontalScroll, float x = 0, float y = 0, float width = 100, float height = 100, float scrollSpeed = 1)</p>
+</li>
+<li>
+<p>UIScrollRect AddScrollRect(string name, bool horizontalScroll, float x = 0, float y = 0, float width = 100, float height = 100, float scrollSpeed = 1, bool mask = false)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uiwindow_uipanel">UIWindow : UIPanel</h3>
+<div class="paragraph">
+<p>可以打开关闭，所有ui的基础</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>methods:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Open()</p>
+</li>
+<li>
+<p>Close()</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uiscrollpanel_uipanel">UIScrollPanel : UIPanel</h3>
+<div class="paragraph">
+<p>双方向滚动面板，按住左ctrl使滚动方向旋转90%，不支持mask</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>HorizontalScrollEnable : bool</p>
+</li>
+<li>
+<p>VerticalScrollEnable : bool</p>
+</li>
+<li>
+<p>ScrollSpeed : float</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_uiscrollrect_uiscrollpanel">UIScrollRect : UIScrollPanel</h3>
+<div class="paragraph">
+<p>双方向滚动区域，支持mask</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>fields:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Mask : bool</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_注">注</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>参数名后跟?代表该参数可选，默认值为空</p>
+</li>
+<li>
+<p>参数名后跟=代表该参数可选，默认值为=的值</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2025-08-10 18:51:55 +0800
+Last updated 2025-08-16 13:24:39 +0800
 </div>
 </div>
 <script>
