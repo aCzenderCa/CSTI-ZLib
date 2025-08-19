@@ -1,6 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using ChatTreeLoader.Util;
+using CSTI_LuaActionSupport.Helper;
+using CSTI_LuaActionSupport.LuaCodeHelper;
 using CSTI_ZLib.LuaLIbs.Utils;
 using CSTI_ZLib.UI.Com;
+using CSTI_ZLib.UI.Utils;
 using CSTI_ZLib.Utils;
 using NLua;
 using UnityEngine;
@@ -19,54 +25,114 @@ public class CommonUIBase : IDisposable
 
     #region Event
 
-    private EventOnClick? _eventOnClick;
+    private EventOnClick? _eventOnClickCom;
+    private EventOnDropOn? _eventOnDropOnCom;
     private event Action? IntelOnClick;
+    private List<LuaFunction>? IntelLuaOnClicks;
+    private event EventOnDropOn.OnCardDropOnDelegate? IntelOnCardDropOn;
+    private List<LuaFunction>? IntelLuaOnCardDropOn;
 
-    protected event Action? OnClick
+    internal event Action? OnClick
     {
         add
         {
             IntelOnClick += value;
-            UpdateOnClick();
+            UpdateEvents();
         }
         remove
         {
             IntelOnClick -= value;
-            UpdateOnClick();
+            UpdateEvents();
         }
     }
 
-    private void UpdateOnClick()
+    internal event EventOnDropOn.OnCardDropOnDelegate? OnCardDropOn
+    {
+        add
+        {
+            IntelOnCardDropOn += value;
+            UpdateEvents();
+        }
+        remove
+        {
+            IntelOnCardDropOn -= value;
+            UpdateEvents();
+        }
+    }
+
+    private void UpdateEvents()
     {
         if (Self == null) return;
-        _eventOnClick = Self.GetOrAdd<EventOnClick>();
-        _eventOnClick.OnClick -= EventOnClickOnClick;
-        _eventOnClick.OnClick += EventOnClickOnClick;
+        if (IntelOnClick != null || IntelLuaOnClicks != null)
+        {
+            _eventOnClickCom = Self.GetOrAdd<EventOnClick>();
+            _eventOnClickCom.ClickEvent -= EventClickEventComClick;
+            _eventOnClickCom.ClickEvent += EventClickEventComClick;
+        }
+
+        if (IntelOnCardDropOn != null || IntelLuaOnCardDropOn != null)
+        {
+            _eventOnDropOnCom = Self.GetOrAdd<EventOnDropOn>();
+            _eventOnDropOnCom.CardDropOnEvent -= EventOnClickComOnCardDropOn;
+            _eventOnDropOnCom.CardDropOnEvent += EventOnClickComOnCardDropOn;
+        }
     }
 
-    protected virtual void EventOnClickOnClick()
+    private void EventClickEventComClick()
     {
         IntelOnClick?.Invoke();
+        if (IntelLuaOnClicks != null)
+        {
+            foreach (var intelLuaOnClick in IntelLuaOnClicks)
+            {
+                intelLuaOnClick.Call();
+            }
+
+            GameManager.Instance.ProcessCache().ProcessAll();
+        }
     }
 
-    internal void AddOnClick(Action action)
+    private void EventOnClickComOnCardDropOn(IReadOnlyList<InGameCardBase> draggedCards)
     {
-        OnClick += action;
-    }
+        IntelOnCardDropOn?.Invoke(draggedCards);
+        var cardAccessBridges = draggedCards.Select(card => new CardAccessBridge(card)).ToLuaList();
+        if (IntelLuaOnCardDropOn != null)
+        {
+            foreach (var intelLuaOnCardDropOn in IntelLuaOnCardDropOn)
+            {
+                intelLuaOnCardDropOn.Call(cardAccessBridges);
+            }
 
-    internal void RemoveOnClick(Action action)
-    {
-        OnClick -= action;
+            GameManager.Instance.ProcessCache().ProcessAll();
+        }
     }
 
     public void AddOnClick(LuaFunction action)
     {
-        OnClick += action.Map();
+        IntelLuaOnClicks ??= [];
+        IntelLuaOnClicks.Add(action);
+        UpdateEvents();
     }
 
     public void RemoveOnClick(LuaFunction action)
     {
-        OnClick -= action.Map();
+        IntelLuaOnClicks ??= [];
+        IntelLuaOnClicks.Remove(action);
+        UpdateEvents();
+    }
+
+    public void AddOnCardDropOn(LuaFunction action)
+    {
+        IntelLuaOnCardDropOn ??= [];
+        IntelLuaOnCardDropOn.Add(action);
+        UpdateEvents();
+    }
+
+    public void RemoveOnCardDropOn(LuaFunction action)
+    {
+        IntelLuaOnCardDropOn ??= [];
+        IntelLuaOnCardDropOn.Remove(action);
+        UpdateEvents();
     }
 
     #endregion
@@ -106,10 +172,7 @@ public class CommonUIBase : IDisposable
         Self.localRotation = Quaternion.Euler(0, 0, Rotation);
         Self.localScale = LocalScale;
 
-        if (IntelOnClick != null)
-        {
-            UpdateOnClick();
-        }
+        UpdateEvents();
     }
 
     /// <summary>

@@ -6,10 +6,10 @@ namespace CSTI_ZLib.UI.Com;
 
 public class EventOnClick : MonoBehaviour, IPointerClickHandler
 {
-    public event Action? OnClick;
+    public event Action? ClickEvent;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        OnClick?.Invoke();
+        ClickEvent?.Invoke();
     }
 }

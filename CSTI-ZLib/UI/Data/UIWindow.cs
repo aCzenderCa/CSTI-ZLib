@@ -10,7 +10,7 @@ public class UIWindow : UIPanel
         {
             if (field == null && GraphicsManager.Instance)
             {
-                field = GraphicsManager.Instance.MenuObject.transform.parent;
+                field = GraphicsManager.Instance.CardInspectionPopup.transform.parent;
             }
 
             if (field == null && Object.FindObjectOfType<MainMenu>() is var menu && menu)
