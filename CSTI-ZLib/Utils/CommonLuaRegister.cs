@@ -38,7 +38,7 @@ public static class CommonLuaRegister
                  where type.GetCustomAttribute(typeof(LuaLibAttribute)) != null
                  select type)
         {
-            var luaLibInitFunc = AccessTools.DeclaredMethod(luaLibType, "LuaLibInit");
+            var luaLibInitFunc = AccessTools.GetDeclaredMethods(luaLibType).FirstOrDefault(info => info.Name == "LuaLibInit");
             if (luaLibInitFunc != null)
             {
                 luaLibInitFunc.Invoke(null, []);
