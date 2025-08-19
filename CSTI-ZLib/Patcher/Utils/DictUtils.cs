@@ -15,8 +15,7 @@ public static class DictUtils
     public static void Add<TKey, TDelegate>(this Dictionary<TKey, TDelegate?> dict, TKey key, TDelegate value)
         where TDelegate : MulticastDelegate
     {
-        if (!dict.ContainsKey(key)) dict.Add(key, null);
-
-        dict[key] = (TDelegate)Delegate.Combine(dict[key], value);
+        if (!dict.ContainsKey(key)) dict.Add(key, value);
+        else dict[key] = (TDelegate)Delegate.Combine(dict[key], value);
     }
 }

@@ -20,7 +20,7 @@ public static class CardVisualPatcher
     }
 
     private static readonly List<CardClickDelegate> OnCardClicks = [];
-    public static Dictionary<string, Action<CardAccessBridge, TooltipText>?> CardHoverEvents;
+    public static readonly Dictionary<string, Action<CardAccessBridge, TooltipText>?> CardHoverEvents = new();
 
 
     [HarmonyPatch(typeof(InGameCardBase), nameof(InGameCardBase.OnPointerClick)), HarmonyPrefix]

@@ -19,15 +19,16 @@ public class MainRuntime : BaseUnityPlugin
 
     public static Lua Lua => CardActionPatcher.LuaRuntime;
 
-    private void Awake()
+    static MainRuntime()
     {
         Harmony.CreateAndPatchAll(typeof(MainRuntime));
-        RegisterPatcher.Overwrite_CardActionPatcher_Register();
     }
 
-    private void Start()
+    private void Awake()
     {
+        RegisterPatcher.Overwrite_CardActionPatcher_Register();
         CommonLuaRegister.RegisterAll();
+        if (Lua.GetTable("Enums") == null) Lua.NewTable("Enums");
         Lua.Register<TextAlignmentOptions>($"Enums.{nameof(TextAlignmentOptions)}");
     }
 

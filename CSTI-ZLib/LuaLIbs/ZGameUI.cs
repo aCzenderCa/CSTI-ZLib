@@ -7,6 +7,14 @@ namespace CSTI_ZLib.LuaLIbs;
 [LuaLib]
 public class ZGameUI
 {
+    #region Init
+
+    internal static void LuaLibInit()
+    {
+    }
+
+    #endregion
+
     public static UIWindow CreateWindow(string name, string backgroundSprite = "", float x = 0, float y = 0, float width = 100,
         float height = 100)
     {
